@@ -1,0 +1,81 @@
+-------------------------------------------------------------------------------
+                 GBAconv 1.00 (c) by Frederic Cambus 2002-2006
+-------------------------------------------------------------------------------
+
+
+
+LICENSE:
+--------
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+
+
+DESCRIPTION:
+------------
+
+GBAconv is a set of tools aimed at GameBoy Advance developers, allowing
+to convert WAV sounds and PCX images into C arrays to be included in
+GBA programs.
+
+It is composed of two programs:
+
+pcx2gba: exports a PCX 8-bpp image to 16-bit values C arrays
+         (palette + image data (2 pixels per value))
+wav2gba: exports a WAV 8-bit mono sound to 8-bit signed values array.
+
+There won't be any other releases of GBAconv, as I've no interest for
+the GBA platform anymore.
+
+
+
+COMPILING:
+----------
+
+Simply type "make" to compile the programs.
+
+They have been successfully compiled on:
+
+- 32-bit x86 Architecture (Ubuntu Linux 5.10, FreeBSD 5.4)
+
+
+
+USAGE:
+------
+
+pcx2gba input.pcx output.inc array_name (Input File must be 8-bit PCX)
+wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)
+
+
+
+DISTRIBUTION:
+-------------
+
+If you want to add a GBAconv download link on your page, please use the
+following sourceforge download link:
+
+For version 1.00:
+http://prdownloads.sourceforge.net/gbaconv/gbaconv-1.00-src.tar.gz?download
+
+
+
+CONTACT:
+--------
+
+Project Homepage: http://gbaconv.sourceforge.net
+
+For bug report, feedback, or any other reasons, write at the following 
+address (replace AT by @ and DOT by .):
+Frederic Cambus <fcambus AT users DOT sourceforge DOT net>

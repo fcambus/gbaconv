@@ -8,9 +8,9 @@ GBA programs.
 
 It is composed of two programs:
 
-- pcx2gba: exports a PCX 8-bpp image to 16-bit values C arrays
+- **pcx2gba** : exports a PCX 8-bpp image to 16-bit values C arrays
            (palette + image data (2 pixels per value))
-- wav2gba: exports a WAV 8-bit mono sound to 8-bit signed values array
+- **wav2gba** : exports a WAV 8-bit mono sound to 8-bit signed values array
 
 There won't be any other releases of GBAconv, as I've no interest for the GBA platform anymore.
 
@@ -24,8 +24,8 @@ They have been successfully compiled on:
 
 ## Usage
 
-pcx2gba input.pcx output.inc array_name (Input File must be 8-bit PCX)
-wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)
+	pcx2gba input.pcx output.inc array_name (Input File must be 8-bit PCX)
+	wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)
 
 ## License
 

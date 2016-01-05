@@ -26,8 +26,7 @@ struct stat input_file_stat;
 
 FILE *output_file;
 
-struct pcx_header
-{
+struct pcx_header {
    char ID;
    char version;
    char encoding;
@@ -62,17 +61,15 @@ int run_position;
 
 
 /*****************************************************************************/
-/* MAIN                                                                      */
+/* Main                                                                      */
 /*****************************************************************************/
 
-int main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]) {
    printf("-------------------------------------------------------------------------------\n");
    printf("      PCX to GBA Converter - GBAconv 1.00 (c) by Frederic Cambus 2002-2006\n");
    printf("-------------------------------------------------------------------------------\n\n");
 
-   if (argc!=4)
-   {
+   if (argc!=4) {
       printf("USAGE: pcx2gba input.pcx output.inc array_name (Input File must be 8-bpp PCX)\n\n");
       exit(0);
    }
@@ -80,7 +77,7 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* LOAD INPUT FILE                                                           */
+/* Load Input File                                                           */
 /*****************************************************************************/
 
    stat (argv[1], &input_file_stat);
@@ -88,15 +85,13 @@ int main (int argc, char *argv[])
 
    input_file_buffer=malloc(input_file_size);
 
-   if (input_file_buffer==NULL)
-   {
+   if (input_file_buffer==NULL) {
       printf("ERROR: Cannot allocate memory\n\n");
       exit(-1);
    }
 
    input_file=fopen(argv[1],"rb");
-   if (input_file==NULL)
-   {
+   if (input_file==NULL) {
       printf("ERROR: Cannot open file %s\n\n",argv[1]);
       exit(-1);
    }
@@ -107,13 +102,12 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* CHECK THAT THE FILE IS A VALID 8-bpp PCX                                  */
+/* Check that the file is a valid 8-bpp PCX                                  */
 /*****************************************************************************/
 
    memcpy(&pcx_header,input_file_buffer,128);
 
-   if (pcx_header.bits_per_pixel!=8)
-   {
+   if (pcx_header.bits_per_pixel!=8) {
       printf("ERROR: Input File is not 8-bpp\n\n");
       exit(-1);
    }
@@ -121,49 +115,42 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* UNCOMPRESS RLE ENCODED PCX INPUT FILE                                     */
+/* Uncompress RLE encoded PCX Input File                                     */
 /*****************************************************************************/
 
    pcx_buffer_size=(pcx_header.x_max+1)*(pcx_header.y_max+1);
    pcx_buffer=malloc(pcx_buffer_size);
 
-   while (loop<input_file_size-768-128)
-   {
+   while (loop<input_file_size-768-128) {
       current_byte=input_file_buffer[loop+128];
 
-      if (current_byte>192)
-      {
+      if (current_byte>192) {
          run_count=current_byte-192;
 
-         for (run_position=0;run_position<run_count;run_position++)
-         {
+         for (run_position=0;run_position<run_count;run_position++) {
             pcx_buffer[offset+run_position]=input_file_buffer[loop+128+1];
          }
          offset+=run_count;
          loop+=2;
-      }
-      else
-      {
+      } else {
          pcx_buffer[offset]=current_byte;
          offset++;
          loop++;
       }
    }
 
-   for (loop=0;loop<768;loop++)
-   {
+   for (loop=0;loop<768;loop++) {
       pcx_image_palette[loop]=(input_file_buffer[input_file_size-768+loop]/8);
    }
 
 
 
 /*****************************************************************************/
-/* CREATE OUTPUT FILE                                                        */
+/* Create Output File                                                        */
 /*****************************************************************************/
 
    output_file=fopen(argv[2],"w");
-   if (output_file==NULL)
-   {
+   if (output_file==NULL) {
       printf("ERROR: Cannot create file %s\n\n",argv[2]);
       exit(-1);
    }
@@ -173,8 +160,7 @@ int main (int argc, char *argv[])
 
    fprintf(output_file,"const u16 %s_palette[] = {\n", argv[3]);
 
-   for (loop=0;loop<256;loop++)
-   {
+   for (loop=0;loop<256;loop++) {
       fprintf(output_file,"0x%x,",(pcx_image_palette[loop*3] | pcx_image_palette[(loop*3)+1]<<5 | pcx_image_palette[(loop*3)+2]<<10));
    }
 
@@ -183,8 +169,7 @@ int main (int argc, char *argv[])
 
    fprintf(output_file,"const u16 %s[] = {\n", argv[3]);
 
-   for (loop=0;loop<pcx_buffer_size/2;loop++)
-   {
+   for (loop=0;loop<pcx_buffer_size/2;loop++) {
       fprintf(output_file,"0x%x,",(pcx_buffer[loop*2] | pcx_buffer[(loop*2)+1]<<8));
    }
 
@@ -194,7 +179,7 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* TERMINATE PROGRAM                                                         */
+/* Terminate Program                                                         */
 /*****************************************************************************/
 
    fclose(output_file);

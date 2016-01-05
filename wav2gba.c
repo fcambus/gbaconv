@@ -26,8 +26,7 @@ struct stat input_file_stat;
 
 FILE *output_file;
 
-struct wave_header
-{
+struct wave_header {
    char chunk_ID[4];
    unsigned int chunk_size;
    char format[4];
@@ -48,17 +47,15 @@ int loop;
 
 
 /*****************************************************************************/
-/* MAIN                                                                      */
+/* Main                                                                      */
 /*****************************************************************************/
 
-int main (int argc, char *argv[])
-{
+int main (int argc, char *argv[]) {
    printf("-------------------------------------------------------------------------------\n");
    printf("      WAV to GBA Converter - GBAconv 1.00 (c) by Frederic Cambus 2002-2016\n");
    printf("-------------------------------------------------------------------------------\n\n");
 
-   if (argc!=4)
-   {
+   if (argc!=4) {
       printf("USAGE: wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)\n\n");
       exit(0);
    }
@@ -66,7 +63,7 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* LOAD INPUT FILE                                                           */
+/* load input file                                                           */
 /*****************************************************************************/
 
    stat (argv[1], &input_file_stat);
@@ -74,15 +71,13 @@ int main (int argc, char *argv[])
 
    input_file_buffer=malloc(input_file_size);
 
-   if (input_file_buffer==NULL)
-   {
+   if (input_file_buffer==NULL) {
       printf("ERROR: Cannot allocate memory\n\n");
       exit(-1);
    }
 
    input_file=fopen(argv[1],"rb");
-   if (input_file==NULL)
-   {
+   if (input_file==NULL) {
       printf("ERROR: Cannot open file %s\n\n",argv[1]);
       exit(-1);
    }
@@ -93,19 +88,17 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* CHECK THAT THE FILE IS A VALID 8-bit MONO WAV                             */
+/* Check that the file is a valid 8-bit MONO WAV                             */
 /*****************************************************************************/
 
    memcpy(&wave_header,input_file_buffer,44);
 
-   if (wave_header.channels!=1)
-   {
+   if (wave_header.channels!=1) {
       printf("ERROR: Input File is not MONO\n\n");
       exit(-1);
    }
 
-   if (wave_header.bits_per_sample!=8)
-   {
+   if (wave_header.bits_per_sample!=8) {
       printf("ERROR: Input File is not 8-bit\n\n");
       exit(-1);
    }
@@ -113,12 +106,11 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* CREATE OUTPUT FILE                                                        */
+/* Create Output File                                                        */
 /*****************************************************************************/
 
    output_file=fopen(argv[2],"w");
-   if (output_file==NULL)
-   {
+   if (output_file==NULL) {
       printf("ERROR: Cannot create file %s\n\n",argv[2]);
       exit(-1);
    }
@@ -128,8 +120,7 @@ int main (int argc, char *argv[])
 
    fprintf(output_file,"const s8 %s[] = {\n", argv[3]);
 
-   for (loop=0;loop<input_file_size;loop++)
-   {
+   for (loop=0;loop<input_file_size;loop++) {
       fprintf(output_file,"0x%x,",input_file_buffer[44+loop]+128);
    }
    fseek(output_file,ftell(output_file)-1,0);
@@ -138,7 +129,7 @@ int main (int argc, char *argv[])
 
 
 /*****************************************************************************/
-/* TERMINATE PROGRAM                                                         */
+/* Terminate Program                                                         */
 /*****************************************************************************/
 
    fclose(output_file);

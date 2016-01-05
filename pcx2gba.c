@@ -1,26 +1,16 @@
 /*****************************************************************************/
 /*                                                                           */
-/* GBAconv 1.00 (c) by Frederic Cambus 2002-2006                             */
-/* http://gbaconv.sourceforge.net                                            */
+/* GBAconv 1.00                                                              */
+/* Copyright (c) 2002-2016, Frederic Cambus                                  */
+/* https://github.com/fcambus/gbaconv                                        */
 /*                                                                           */
 /* PCX to GBA Converter                                                      */
 /*                                                                           */
-/* Created:      2002/12/09                                                  */
-/* Last Updated: 2006/01/13                                                  */
+/* Created:      2002-12-09                                                  */
+/* Last Updated: 2016-01-05                                                  */
 /*                                                                           */
-/* This program is free software; you can redistribute it and/or modify      */
-/* it under the terms of the GNU General Public License as published by      */
-/* the Free Software Foundation; either version 2 of the License, or         */
-/* (at your option) any later version.                                       */
-/*                                                                           */
-/* This program is distributed in the hope that it will be useful,           */
-/* but WITHOUT ANY WARRANTY; without even the implied warranty of            */
-/* MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the             */
-/* GNU General Public License for more details.                              */
-/*                                                                           */
-/* You should have received a copy of the GNU General Public License         */
-/* along with this program; if not, write to the Free Software               */
-/* Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA */
+/* GBAconv is released under the BSD 3-Clause license.                       */
+/* See LICENSE file for details.                                             */
 /*                                                                           */
 /*****************************************************************************/
 

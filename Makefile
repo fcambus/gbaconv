@@ -8,13 +8,13 @@
 #                                                                             # 
 # GBAconv is released under the BSD 3-Clause license.                         #
 # See LICENSE file for details.                                               #
-#                                                                             # 
+#                                                                             #
 ###############################################################################
 
 
 CC = gcc
 TARGET = all
-CFLAGS = -Wall -ansi -pedantic 
+CFLAGS = -Wall -ansi -pedantic
 
 all :
 	$(CC) $(CFLAGS) -o pcx2gba pcx2gba.c

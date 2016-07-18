@@ -29,7 +29,7 @@ They have been successfully compiled on:
 
 ## License
 
-GBAconv is released under the BSD 3-Clause license. See `LICENSE` file for details.
+GBAconv is released under the BSD 2-Clause license. See `LICENSE` file for details.
 
 ## Author
 

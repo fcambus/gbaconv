@@ -7,9 +7,9 @@
 /* WAV to GBA Converter                                                      */
 /*                                                                           */
 /* Created:      2002-12-10                                                  */
-/* Last Updated: 2016-01-05                                                  */
+/* Last Updated: 2016-07-18                                                  */
 /*                                                                           */
-/* GBAconv is released under the BSD 3-Clause license.                       */
+/* GBAconv is released under the BSD 2-Clause license.                       */
 /* See LICENSE file for details.                                             */
 /*                                                                           */
 /*****************************************************************************/

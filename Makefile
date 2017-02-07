@@ -16,7 +16,7 @@ CC = gcc
 TARGET = all
 CFLAGS = -Wall -ansi -pedantic
 
-all :
+all:
 	$(CC) $(CFLAGS) -o pcx2gba pcx2gba.c
 	$(CC) $(CFLAGS) -o wav2gba wav2gba.c
 

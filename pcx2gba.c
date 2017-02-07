@@ -1,13 +1,13 @@
 /*****************************************************************************/
 /*                                                                           */
 /* GBAconv 1.00                                                              */
-/* Copyright (c) 2002-2016, Frederic Cambus                                  */
+/* Copyright (c) 2002-2017, Frederic Cambus                                  */
 /* https://github.com/fcambus/gbaconv                                        */
 /*                                                                           */
 /* PCX to GBA Converter                                                      */
 /*                                                                           */
 /* Created:      2002-12-09                                                  */
-/* Last Updated: 2016-07-18                                                  */
+/* Last Updated: 2017-02-07                                                  */
 /*                                                                           */
 /* GBAconv is released under the BSD 2-Clause license.                       */
 /* See LICENSE file for details.                                             */
@@ -66,7 +66,7 @@ int run_position;
 
 int main (int argc, char *argv[]) {
    printf("-------------------------------------------------------------------------------\n");
-   printf("      PCX to GBA Converter - GBAconv 1.00 (c) by Frederic Cambus 2002-2006\n");
+   printf("      PCX to GBA Converter - GBAconv 1.00 (c) by Frederic Cambus 2002-2017\n");
    printf("-------------------------------------------------------------------------------\n\n");
 
    if (argc!=4) {

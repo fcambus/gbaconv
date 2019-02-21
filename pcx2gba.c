@@ -84,6 +84,11 @@ int main(int argc, char *argv[]) {
 	fread(input_file_buffer, input_file_size, 1, input_file);
 	fclose(input_file);
 
+	if (input_file_size < PCX_HEADER_LENGTH) {
+		printf("ERROR: Input File is not a PCX file\n\n");
+		return -1;
+	}
+
 	/* Check that the file is a valid 8-bpp PCX */
 	memcpy(&pcx_header, input_file_buffer, PCX_HEADER_LENGTH);
 

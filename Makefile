@@ -9,13 +9,12 @@
 # See LICENSE file for details.
 #
 
-CC = gcc
-TARGET = all
-CFLAGS = -Wall -ansi -pedantic
+CC ?= cc
+CFLAGS += -Wall -ansi -pedantic
 
 all:
 	$(CC) $(CFLAGS) -o pcx2gba pcx2gba.c
 	$(CC) $(CFLAGS) -o wav2gba wav2gba.c
 
 clean:
-	rm -f pcx2gba wav2gba *.o *.core core
+	rm -f pcx2gba wav2gba *.o

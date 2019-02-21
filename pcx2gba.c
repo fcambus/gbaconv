@@ -17,6 +17,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#define PCX_HEADER_LENGTH 128
+
 FILE *input_file;
 unsigned char *input_file_buffer;
 int input_file_size;
@@ -83,7 +85,7 @@ int main(int argc, char *argv[]) {
 	fclose(input_file);
 
 	/* Check that the file is a valid 8-bpp PCX */
-	memcpy(&pcx_header, input_file_buffer, 128);
+	memcpy(&pcx_header, input_file_buffer, PCX_HEADER_LENGTH);
 
 	if (pcx_header.bits_per_pixel != 8) {
 		printf("ERROR: Input File is not 8-bpp\n\n");

@@ -42,8 +42,6 @@ struct wave_header {
 	unsigned int data_chunk_size;
 } wave_header;
 
-int loop;
-
 int main(int argc, char *argv[]) {
 	if (argc != 4) {
 		printf("USAGE: wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)\n\n");
@@ -100,7 +98,7 @@ int main(int argc, char *argv[]) {
 
 	fprintf(output_file, "const s8 %s[] = {\n", argv[3]);
 
-	for (loop = WAVE_HEADER_LENGTH; loop < input_file_size; loop++) {
+	for (size_t loop = WAVE_HEADER_LENGTH; loop < input_file_size; loop++) {
 		fprintf(output_file, "0x%x,", input_file_buffer[loop]+128);
 	}
 

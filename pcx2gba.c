@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	for (loop = 0; loop < 768; loop++) {
-		pcx_image_palette[loop] = (input_file_buffer[input_file_size-768+loop]/8);
+		pcx_image_palette[loop] = input_file_buffer[input_file_size-768+loop] / 8;
 	}
 
 	/* Create Output File */
@@ -138,7 +138,7 @@ int main(int argc, char *argv[]) {
 	fprintf(output_file, "const u16 %s_palette[] = {\n", argv[3]);
 
 	for (loop = 0; loop < 256; loop++) {
-		fprintf(output_file, "0x%x,", (pcx_image_palette[loop*3] | pcx_image_palette[(loop*3)+1]<<5 | pcx_image_palette[(loop*3)+2]<<10));
+		fprintf(output_file, "0x%x,", pcx_image_palette[loop*3] | pcx_image_palette[(loop*3)+1]<<5 | pcx_image_palette[(loop*3)+2]<<10);
 	}
 
 	fseek(output_file, ftell(output_file)-1, 0);
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 	fprintf(output_file, "const u16 %s[] = {\n", argv[3]);
 
 	for (loop = 0; loop < pcx_buffer_size/2; loop++) {
-		fprintf(output_file, "0x%x,", (pcx_buffer[loop*2] | pcx_buffer[(loop*2)+1]<<8));
+		fprintf(output_file, "0x%x,", pcx_buffer[loop*2] | pcx_buffer[(loop*2)+1]<<8);
 	}
 
 	fseek(output_file, ftell(output_file)-1, 0);

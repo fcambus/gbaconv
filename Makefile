@@ -10,7 +10,7 @@
 #
 
 CC ?= cc
-CFLAGS += -Wall -ansi -pedantic
+CFLAGS += -std=c99 -Wall -pedantic
 
 all:
 	$(CC) $(CFLAGS) -o pcx2gba pcx2gba.c

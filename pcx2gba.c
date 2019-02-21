@@ -96,14 +96,16 @@ int main(int argc, char *argv[]) {
 	pcx_buffer_size = (pcx_header.x_max+1)*(pcx_header.y_max+1);
 	pcx_buffer = malloc(pcx_buffer_size);
 
-	while (loop < input_file_size-768-128) {
-		current_byte = input_file_buffer[loop+128];
+	loop = PCX_HEADER_LENGTH;
+
+	while (loop < input_file_size-768) {
+		current_byte = input_file_buffer[loop];
 
 		if (current_byte > 192) {
 			run_count = current_byte-192;
 
 			for (run_position = 0; run_position < run_count; run_position++) {
-				pcx_buffer[offset+run_position] = input_file_buffer[loop+128+1];
+				pcx_buffer[offset+run_position] = input_file_buffer[loop+1];
 			}
 			offset += run_count;
 			loop += 2;

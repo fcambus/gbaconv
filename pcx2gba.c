@@ -59,7 +59,7 @@ int run_position;
 int main(int argc, char *argv[]) {
 	if (argc != 4) {
 		printf("USAGE: pcx2gba input.pcx output.inc array_name (Input File must be 8-bpp PCX)\n\n");
-		exit(0);
+		return 0;
 	}
 
 	/* Load Input File */
@@ -70,13 +70,13 @@ int main(int argc, char *argv[]) {
 
 	if (input_file_buffer == NULL) {
 		printf("ERROR: Cannot allocate memory\n\n");
-		exit(-1);
+		return -1;
 	}
 
 	input_file = fopen(argv[1], "rb");
 	if (input_file == NULL) {
 		printf("ERROR: Cannot open file %s\n\n", argv[1]);
-		exit(-1);
+		return -1;
 	}
 
 	fread(input_file_buffer, input_file_size, 1, input_file);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 
 	if (pcx_header.bits_per_pixel != 8) {
 		printf("ERROR: Input File is not 8-bpp\n\n");
-		exit(-1);
+		return -1;
 	}
 
 	/* Uncompress RLE encoded PCX Input File */
@@ -120,7 +120,7 @@ int main(int argc, char *argv[]) {
 	output_file = fopen(argv[2], "w");
 	if (output_file == NULL) {
 		printf("ERROR: Cannot create file %s\n\n", argv[2]);
-		exit(-1);
+		return -1;
 	}
 
 	printf("INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max+1, pcx_header.y_max+1, pcx_header.bits_per_pixel);
@@ -150,5 +150,5 @@ int main(int argc, char *argv[]) {
 
 	printf("Successfully created file %s\n\n", argv[2]);
 
-	return (0);
+	return 0;
 }

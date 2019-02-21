@@ -47,7 +47,7 @@ int loop;
 int main(int argc, char *argv[]) {
 	if (argc != 4) {
 		printf("USAGE: wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)\n\n");
-		exit(0);
+		return 0;
 	}
 
 	/* load input file */
@@ -58,13 +58,13 @@ int main(int argc, char *argv[]) {
 
 	if (input_file_buffer == NULL) {
 		printf("ERROR: Cannot allocate memory\n\n");
-		exit(-1);
+		return -1;
 	}
 
 	input_file = fopen(argv[1], "rb");
 	if (input_file == NULL) {
 		printf("ERROR: Cannot open file %s\n\n", argv[1]);
-		exit(-1);
+		return -1;
 	}
 
 	fread(input_file_buffer, input_file_size, 1, input_file);
@@ -80,19 +80,19 @@ int main(int argc, char *argv[]) {
 
 	if (wave_header.channels != 1) {
 		printf("ERROR: Input File is not MONO\n\n");
-		exit(-1);
+		return -1;
 	}
 
 	if (wave_header.bits_per_sample != 8) {
 		printf("ERROR: Input File is not 8-bit\n\n");
-		exit(-1);
+		return -1;
 	}
 
 	/* Create Output File */
 	output_file = fopen(argv[2], "w");
 	if (output_file == NULL) {
 		printf("ERROR: Cannot create file %s\n\n", argv[2]);
-		exit(-1);
+		return -1;
 	}
 
 	printf("INPUT  FILE: %s (8-bit, MONO, %i Hz)\n", argv[1], wave_header.sample_rate);
@@ -113,5 +113,5 @@ int main(int argc, char *argv[]) {
 
 	printf("Successfully created file %s\n\n", argv[2]);
 
-	return (0);
+	return 0;
 }

@@ -17,6 +17,8 @@
 #include <string.h>
 #include <sys/stat.h>
 
+#define WAVE_HEADER_LENGTH 44
+
 FILE *input_file;
 char *input_file_buffer;
 int input_file_size;
@@ -73,7 +75,7 @@ int main(int argc, char *argv[]) {
 	fclose(input_file);
 
 	/* Check that the file is a valid 8-bit MONO WAV */
-	memcpy(&wave_header, input_file_buffer, 44);
+	memcpy(&wave_header, input_file_buffer, WAVE_HEADER_LENGTH);
 
 	if (wave_header.channels != 1) {
 		printf("ERROR: Input File is not MONO\n\n");
@@ -98,7 +100,7 @@ int main(int argc, char *argv[]) {
 	fprintf(output_file, "const s8 %s[] = {\n", argv[3]);
 
 	for (loop = 0; loop < input_file_size; loop++) {
-		fprintf(output_file, "0x%x,", input_file_buffer[44+loop]+128);
+		fprintf(output_file, "0x%x,", input_file_buffer[WAVE_HEADER_LENGTH+loop]+128);
 	}
 
 	fseek(output_file, ftell(output_file)-1, 0);

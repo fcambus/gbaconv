@@ -57,10 +57,6 @@ int run_count;
 int run_position;
 
 int main(int argc, char *argv[]) {
-	printf("-------------------------------------------------------------------------------\n");
-	printf("      PCX to GBA Converter - GBAconv 1.00 (c) by Frederic Cambus 2002-2017\n");
-	printf("-------------------------------------------------------------------------------\n\n");
-
 	if (argc != 4) {
 		printf("USAGE: pcx2gba input.pcx output.inc array_name (Input File must be 8-bpp PCX)\n\n");
 		exit(0);

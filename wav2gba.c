@@ -45,10 +45,6 @@ struct wave_header {
 int loop;
 
 int main(int argc, char *argv[]) {
-	printf("-------------------------------------------------------------------------------\n");
-	printf("      WAV to GBA Converter - GBAconv 1.00 (c) by Frederic Cambus 2002-2017\n");
-	printf("-------------------------------------------------------------------------------\n\n");
-
 	if (argc != 4) {
 		printf("USAGE: wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)\n\n");
 		exit(0);

@@ -98,8 +98,8 @@ int main(int argc, char *argv[]) {
 
 	fprintf(output_file, "const s8 %s[] = {\n", argv[3]);
 
-	for (size_t loop = WAVE_HEADER_LENGTH; loop < input_file_size; loop++) {
-		fprintf(output_file, "0x%x,", input_file_buffer[loop]+128);
+	for (size_t loop = 0; loop < input_file_size - WAVE_HEADER_LENGTH; loop++) {
+		fprintf(output_file, "0x%x,", input_file_buffer[WAVE_HEADER_LENGTH + loop] + 128);
 	}
 
 	fseek(output_file, ftell(output_file)-1, 0);

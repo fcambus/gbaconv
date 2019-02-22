@@ -85,7 +85,7 @@ int main(int argc, char *argv[]) {
 	fread(input_file_buffer, input_file_size, 1, input_file);
 	fclose(input_file);
 
-	if (input_file_size < PCX_HEADER_LENGTH) {
+	if (input_file_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
 		printf("ERROR: Input File is not a PCX file\n\n");
 		return -1;
 	}

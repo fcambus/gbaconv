@@ -12,18 +12,18 @@
  * See LICENSE file for details.
  */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/mman.h>
 #include <sys/stat.h>
 
 #define PCX_HEADER_LENGTH 128
 #define PCX_PALETTE_LENGTH 768
 
-FILE *input_file;
 unsigned char *input_file_buffer;
-int input_file_size;
-struct stat input_file_stat;
 
 struct pcx_header {
 	char ID;
@@ -58,32 +58,31 @@ int run_count;
 int run_position;
 
 int main(int argc, char *argv[]) {
+	int fd;
+	struct stat st;
+
 	if (argc != 3) {
 		printf("USAGE: pcx2gba input.pcx array_name (Input File must be 8-bpp PCX)\n\n");
 		return 0;
 	}
 
-	/* Load Input File */
-	stat(argv[1], &input_file_stat);
-	input_file_size = input_file_stat.st_size;
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		return 1;
 
-	input_file_buffer = malloc(input_file_size);
-
-	if (input_file_buffer == NULL) {
-		printf("ERROR: Cannot allocate memory\n\n");
+	if (fstat(fd, &st) == -1) {
+		close(fd);
 		return 1;
 	}
 
-	input_file = fopen(argv[1], "rb");
-	if (input_file == NULL) {
-		printf("ERROR: Cannot open file %s\n\n", argv[1]);
+	/* mmap input file into memory */
+	input_file_buffer = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (input_file_buffer == MAP_FAILED) {
+		close(fd);
 		return 1;
 	}
 
-	fread(input_file_buffer, input_file_size, 1, input_file);
-	fclose(input_file);
-
-	if (input_file_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
+	if (st.st_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
 		printf("ERROR: Input File is not a PCX file\n\n");
 		return 1;
 	}
@@ -102,7 +101,7 @@ int main(int argc, char *argv[]) {
 
 	loop = PCX_HEADER_LENGTH;
 
-	while (loop < input_file_size - PCX_PALETTE_LENGTH) {
+	while (loop < st.st_size - PCX_PALETTE_LENGTH) {
 		current_byte = input_file_buffer[loop];
 
 		if (current_byte > 192) {
@@ -121,7 +120,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	for (loop = 0; loop < PCX_PALETTE_LENGTH; loop++) {
-		pcx_image_palette[loop] = input_file_buffer[input_file_size - PCX_PALETTE_LENGTH + loop] / 8;
+		pcx_image_palette[loop] = input_file_buffer[st.st_size - PCX_PALETTE_LENGTH + loop] / 8;
 	}
 
 	fprintf(stderr, "INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max+1, pcx_header.y_max+1, pcx_header.bits_per_pixel);
@@ -143,7 +142,8 @@ int main(int argc, char *argv[]) {
 	fprintf(stdout, "};\n");
 
 	/* Terminate Program */
-	free(input_file_buffer);
+	munmap(input_file_buffer, st.st_size);
+	close(fd);
 
 	return 0;
 }

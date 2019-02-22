@@ -12,17 +12,17 @@
  * See LICENSE file for details.
  */
 
+#include <fcntl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include <sys/mman.h>
 #include <sys/stat.h>
 
 #define WAVE_HEADER_LENGTH 44
 
-FILE *input_file;
 char *input_file_buffer;
-int input_file_size;
-struct stat input_file_stat;
 
 struct wave_header {
 	char chunk_ID[4];
@@ -41,32 +41,31 @@ struct wave_header {
 } wave_header;
 
 int main(int argc, char *argv[]) {
+	int fd;
+	struct stat st;
+
 	if (argc != 3) {
 		printf("USAGE: wav2gba input.wav array_name (Input File must be 8-bit, MONO)\n\n");
 		return 0;
 	}
 
-	/* load input file */
-	stat(argv[1], &input_file_stat);
-	input_file_size = input_file_stat.st_size;
+	fd = open(argv[1], O_RDONLY);
+	if (fd == -1)
+		return 1;
 
-	input_file_buffer = malloc(input_file_size);
-
-	if (input_file_buffer == NULL) {
-		printf("ERROR: Cannot allocate memory\n\n");
+	if (fstat(fd, &st) == -1) {
+		close(fd);
 		return 1;
 	}
 
-	input_file = fopen(argv[1], "rb");
-	if (input_file == NULL) {
-		printf("ERROR: Cannot open file %s\n\n", argv[1]);
+	/* mmap input file into memory */
+	input_file_buffer = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+	if (input_file_buffer == MAP_FAILED) {
+		close(fd);
 		return 1;
 	}
 
-	fread(input_file_buffer, input_file_size, 1, input_file);
-	fclose(input_file);
-
-	if (input_file_size < WAVE_HEADER_LENGTH) {
+	if (st.st_size < WAVE_HEADER_LENGTH) {
 		printf("ERROR: Input File is not a WAV file\n\n");
 		return 1;
 	}
@@ -88,7 +87,7 @@ int main(int argc, char *argv[]) {
 
 	fprintf(stdout, "const s8 %s[] = {", argv[2]);
 
-	for (size_t loop = 0; loop < input_file_size - WAVE_HEADER_LENGTH; loop++) {
+	for (size_t loop = 0; loop < st.st_size - WAVE_HEADER_LENGTH; loop++) {
 		if (loop % 10 == 0)
 			fprintf(stdout, "\n\t");
 
@@ -98,7 +97,8 @@ int main(int argc, char *argv[]) {
 	fprintf(stdout, "\n};\n");
 
 	/* Terminate Program */
-	free(input_file_buffer);
+	munmap(input_file_buffer, st.st_size);
+	close(fd);
 
 	return 0;
 }

@@ -18,6 +18,7 @@
 #include <sys/stat.h>
 
 #define PCX_HEADER_LENGTH 128
+#define PCX_PALETTE_LENGTH 768
 
 FILE *input_file;
 unsigned char *input_file_buffer;
@@ -47,7 +48,7 @@ struct pcx_header {
 	char filler[54];
 } pcx_header;
 
-unsigned char pcx_image_palette[768];
+unsigned char pcx_image_palette[PCX_PALETTE_LENGTH];
 unsigned char *pcx_buffer;
 int pcx_buffer_size;
 
@@ -103,7 +104,7 @@ int main(int argc, char *argv[]) {
 
 	loop = PCX_HEADER_LENGTH;
 
-	while (loop < input_file_size-768) {
+	while (loop < input_file_size - PCX_PALETTE_LENGTH) {
 		current_byte = input_file_buffer[loop];
 
 		if (current_byte > 192) {
@@ -121,8 +122,8 @@ int main(int argc, char *argv[]) {
 		}
 	}
 
-	for (loop = 0; loop < 768; loop++) {
-		pcx_image_palette[loop] = input_file_buffer[input_file_size-768+loop] / 8;
+	for (loop = 0; loop < PCX_PALETTE_LENGTH; loop++) {
+		pcx_image_palette[loop] = input_file_buffer[input_file_size - PCX_PALETTE_LENGTH + loop] / 8;
 	}
 
 	/* Create Output File */

@@ -96,14 +96,16 @@ int main(int argc, char *argv[]) {
 	printf("INPUT  FILE: %s (8-bit, MONO, %i Hz)\n", argv[1], wave_header.sample_rate);
 	printf("OUTPUT FILE: %s\n\n", argv[2]);
 
-	fprintf(output_file, "const s8 %s[] = {\n", argv[3]);
+	fprintf(output_file, "const s8 %s[] = {", argv[3]);
 
 	for (size_t loop = 0; loop < input_file_size - WAVE_HEADER_LENGTH; loop++) {
+		if (loop % 10 == 0)
+			fprintf(output_file, "\n\t");
+
 		fprintf(output_file, "0x%x,", input_file_buffer[WAVE_HEADER_LENGTH + loop] + 128);
 	}
 
-	fseek(output_file, ftell(output_file)-1, 0);
-	fprintf(output_file, "};\n");
+	fprintf(output_file, "\n};\n");
 
 	/* Terminate Program */
 	fclose(output_file);

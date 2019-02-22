@@ -6,7 +6,7 @@
  * WAV to GBA Converter
  *
  * Created:      2002-12-10
- * Last Updated: 2019-02-21
+ * Last Updated: 2019-02-22
  *
  * GBAconv is released under the BSD 2-Clause license.
  * See LICENSE file for details.
@@ -23,8 +23,6 @@ FILE *input_file;
 char *input_file_buffer;
 int input_file_size;
 struct stat input_file_stat;
-
-FILE *output_file;
 
 struct wave_header {
 	char chunk_ID[4];
@@ -43,8 +41,8 @@ struct wave_header {
 } wave_header;
 
 int main(int argc, char *argv[]) {
-	if (argc != 4) {
-		printf("USAGE: wav2gba input.wav output.inc array_name (Input File must be 8-bit, MONO)\n\n");
+	if (argc != 3) {
+		printf("USAGE: wav2gba input.wav array_name (Input File must be 8-bit, MONO)\n\n");
 		return 0;
 	}
 
@@ -86,32 +84,21 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	/* Create Output File */
-	output_file = fopen(argv[2], "w");
-	if (output_file == NULL) {
-		printf("ERROR: Cannot create file %s\n\n", argv[2]);
-		return 1;
-	}
+	fprintf(stderr, "INPUT  FILE: %s (8-bit, MONO, %i Hz)\n", argv[1], wave_header.sample_rate);
 
-	printf("INPUT  FILE: %s (8-bit, MONO, %i Hz)\n", argv[1], wave_header.sample_rate);
-	printf("OUTPUT FILE: %s\n\n", argv[2]);
-
-	fprintf(output_file, "const s8 %s[] = {", argv[3]);
+	fprintf(stdout, "const s8 %s[] = {", argv[2]);
 
 	for (size_t loop = 0; loop < input_file_size - WAVE_HEADER_LENGTH; loop++) {
 		if (loop % 10 == 0)
-			fprintf(output_file, "\n\t");
+			fprintf(stdout, "\n\t");
 
-		fprintf(output_file, "0x%x,", input_file_buffer[WAVE_HEADER_LENGTH + loop] + 128);
+		fprintf(stdout, "0x%x,", input_file_buffer[WAVE_HEADER_LENGTH + loop] + 128);
 	}
 
-	fprintf(output_file, "\n};\n");
+	fprintf(stdout, "\n};\n");
 
 	/* Terminate Program */
-	fclose(output_file);
 	free(input_file_buffer);
-
-	printf("Successfully created file %s\n\n", argv[2]);
 
 	return 0;
 }

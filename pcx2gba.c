@@ -6,7 +6,7 @@
  * PCX to GBA Converter
  *
  * Created:      2002-12-09
- * Last Updated: 2019-02-21
+ * Last Updated: 2019-02-22
  *
  * GBAconv is released under the BSD 2-Clause license.
  * See LICENSE file for details.
@@ -24,8 +24,6 @@ FILE *input_file;
 unsigned char *input_file_buffer;
 int input_file_size;
 struct stat input_file_stat;
-
-FILE *output_file;
 
 struct pcx_header {
 	char ID;
@@ -60,8 +58,8 @@ int run_count;
 int run_position;
 
 int main(int argc, char *argv[]) {
-	if (argc != 4) {
-		printf("USAGE: pcx2gba input.pcx output.inc array_name (Input File must be 8-bpp PCX)\n\n");
+	if (argc != 3) {
+		printf("USAGE: pcx2gba input.pcx array_name (Input File must be 8-bpp PCX)\n\n");
 		return 0;
 	}
 
@@ -126,39 +124,26 @@ int main(int argc, char *argv[]) {
 		pcx_image_palette[loop] = input_file_buffer[input_file_size - PCX_PALETTE_LENGTH + loop] / 8;
 	}
 
-	/* Create Output File */
-	output_file = fopen(argv[2], "w");
-	if (output_file == NULL) {
-		printf("ERROR: Cannot create file %s\n\n", argv[2]);
-		return 1;
-	}
+	fprintf(stderr, "INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max+1, pcx_header.y_max+1, pcx_header.bits_per_pixel);
 
-	printf("INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max+1, pcx_header.y_max+1, pcx_header.bits_per_pixel);
-	printf("OUTPUT FILE: %s\n\n", argv[2]);
-
-	fprintf(output_file, "const u16 %s_palette[] = {\n", argv[3]);
+	fprintf(stdout, "const u16 %s_palette[] = {\n", argv[2]);
 
 	for (loop = 0; loop < 256; loop++) {
-		fprintf(output_file, "0x%x,", pcx_image_palette[loop*3] | pcx_image_palette[(loop*3)+1]<<5 | pcx_image_palette[(loop*3)+2]<<10);
+		fprintf(stdout, "0x%x,", pcx_image_palette[loop*3] | pcx_image_palette[(loop*3)+1]<<5 | pcx_image_palette[(loop*3)+2]<<10);
 	}
 
-	fseek(output_file, ftell(output_file)-1, 0);
-	fprintf(output_file, "};\n\n");
+	fprintf(stdout, "};\n\n");
 
-	fprintf(output_file, "const u16 %s[] = {\n", argv[3]);
+	fprintf(stdout, "const u16 %s[] = {\n", argv[2]);
 
 	for (loop = 0; loop < pcx_buffer_size/2; loop++) {
-		fprintf(output_file, "0x%x,", pcx_buffer[loop*2] | pcx_buffer[(loop*2)+1]<<8);
+		fprintf(stdout, "0x%x,", pcx_buffer[loop*2] | pcx_buffer[(loop*2)+1]<<8);
 	}
 
-	fseek(output_file, ftell(output_file)-1, 0);
-	fprintf(output_file, "};\n");
+	fprintf(stdout, "};\n");
 
 	/* Terminate Program */
-	fclose(output_file);
 	free(input_file_buffer);
-
-	printf("Successfully created file %s\n\n", argv[2]);
 
 	return 0;
 }

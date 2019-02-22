@@ -73,13 +73,13 @@ int main(int argc, char *argv[]) {
 
 	if (input_file_buffer == NULL) {
 		printf("ERROR: Cannot allocate memory\n\n");
-		return -1;
+		return 1;
 	}
 
 	input_file = fopen(argv[1], "rb");
 	if (input_file == NULL) {
 		printf("ERROR: Cannot open file %s\n\n", argv[1]);
-		return -1;
+		return 1;
 	}
 
 	fread(input_file_buffer, input_file_size, 1, input_file);
@@ -87,7 +87,7 @@ int main(int argc, char *argv[]) {
 
 	if (input_file_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
 		printf("ERROR: Input File is not a PCX file\n\n");
-		return -1;
+		return 1;
 	}
 
 	/* Check that the file is a valid 8-bpp PCX */
@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
 
 	if (pcx_header.bits_per_pixel != 8) {
 		printf("ERROR: Input File is not 8-bpp\n\n");
-		return -1;
+		return 1;
 	}
 
 	/* Uncompress RLE encoded PCX Input File */
@@ -130,7 +130,7 @@ int main(int argc, char *argv[]) {
 	output_file = fopen(argv[2], "w");
 	if (output_file == NULL) {
 		printf("ERROR: Cannot create file %s\n\n", argv[2]);
-		return -1;
+		return 1;
 	}
 
 	printf("INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max+1, pcx_header.y_max+1, pcx_header.bits_per_pixel);

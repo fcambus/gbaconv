@@ -75,6 +75,11 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
+	if (st.st_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
+		printf("ERROR: Input File is not a PCX file\n\n");
+		return 1;
+	}
+
 	/* mmap input file into memory */
 	input_file_buffer = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (input_file_buffer == MAP_FAILED) {
@@ -82,14 +87,15 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	if (st.st_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
+	memcpy(&pcx_header, input_file_buffer, PCX_HEADER_LENGTH);
+
+	/* Check that the file is a valid PCX file */
+	if (pcx_header.ID != 10) {
 		printf("ERROR: Input File is not a PCX file\n\n");
 		return 1;
 	}
 
-	/* Check that the file is a valid 8-bpp PCX */
-	memcpy(&pcx_header, input_file_buffer, PCX_HEADER_LENGTH);
-
+	/* Check that the file is a 8-bpp PCX */
 	if (pcx_header.bits_per_pixel != 8) {
 		printf("ERROR: Input File is not 8-bpp\n\n");
 		return 1;

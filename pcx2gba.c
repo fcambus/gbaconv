@@ -1,12 +1,12 @@
 /*
  * GBAconv 1.00
- * Copyright (c) 2002-2017, Frederic Cambus
+ * Copyright (c) 2002-2019, Frederic Cambus
  * https://github.com/fcambus/gbaconv
  *
  * PCX to GBA Converter
  *
  * Created:      2002-12-09
- * Last Updated: 2019-02-22
+ * Last Updated: 2019-03-25
  *
  * GBAconv is released under the BSD 2-Clause license.
  * See LICENSE file for details.

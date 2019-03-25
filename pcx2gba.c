@@ -114,7 +114,8 @@ int main(int argc, char *argv[]) {
 			run_count = current_byte-192;
 
 			for (run_position = 0; run_position < run_count; run_position++) {
-				pcx_buffer[offset+run_position] = input_file_buffer[loop+1];
+				if (offset + run_position < pcx_buffer_size)
+					pcx_buffer[offset + run_position] = input_file_buffer[loop +1];
 			}
 			offset += run_count;
 			loop += 2;

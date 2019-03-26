@@ -11,6 +11,7 @@ script: make
 
 env:
   global:
+    # travis encrypt -r fcambus/gbaconv encrypt COVERITY_SCAN_TOKEN=token
     - secure: "Tj0oTNppsbKzyUexTU4q4yvk91GM5/0qWoB0uy/C8AZyQxR1X4LLGuB2km2UwFnZ9UHTC2vRNkZdLm0CFo3gwKPkqiA9ukLs5VqgnA6k2nU4NncT8SpjjLynZnXNMxByCPs6YCqOO/0vPS/fXhdbglIMDrAqWMrGJxZXthFzVj0="
 
 addons:

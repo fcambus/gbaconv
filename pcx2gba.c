@@ -6,7 +6,7 @@
  * PCX to GBA Converter
  *
  * Created:      2002-12-09
- * Last Updated: 2019-03-25
+ * Last Updated: 2019-05-09
  *
  * GBAconv is released under the BSD 2-Clause license.
  * See LICENSE file for details.
@@ -63,28 +63,28 @@ int main(int argc, char *argv[]) {
 
 	if (argc != 3) {
 		printf("USAGE: pcx2gba input.pcx array_name (Input File must be 8-bpp PCX)\n\n");
-		return 0;
+		return EXIT_SUCCESS;
 	}
 
 	fd = open(argv[1], O_RDONLY);
 	if (fd == -1)
-		return 1;
+		return EXIT_FAILURE;
 
 	if (fstat(fd, &st) == -1) {
 		close(fd);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	if (st.st_size < PCX_HEADER_LENGTH + PCX_PALETTE_LENGTH) {
 		printf("ERROR: Input File is not a PCX file\n\n");
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	/* mmap input file into memory */
 	input_file_buffer = mmap(NULL, st.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
 	if (input_file_buffer == MAP_FAILED) {
 		close(fd);
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	memcpy(&pcx_header, input_file_buffer, PCX_HEADER_LENGTH);
@@ -92,13 +92,13 @@ int main(int argc, char *argv[]) {
 	/* Check that the file is a valid PCX file */
 	if (pcx_header.ID != 10) {
 		printf("ERROR: Input File is not a PCX file\n\n");
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	/* Check that the file is a 8-bpp PCX */
 	if (pcx_header.bits_per_pixel != 8) {
 		printf("ERROR: Input File is not 8-bpp\n\n");
-		return 1;
+		return EXIT_FAILURE;
 	}
 
 	/* Uncompress RLE encoded PCX Input File */
@@ -152,5 +152,5 @@ int main(int argc, char *argv[]) {
 	munmap(input_file_buffer, st.st_size);
 	close(fd);
 
-	return 0;
+	return EXIT_SUCCESS;
 }

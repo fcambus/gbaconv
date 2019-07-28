@@ -6,7 +6,7 @@
  * PCX to GBA Converter
  *
  * Created:      2002-12-09
- * Last Updated: 2019-05-09
+ * Last Updated: 2019-07-28
  *
  * GBAconv is released under the BSD 2-Clause license.
  * See LICENSE file for details.
@@ -14,6 +14,7 @@
 
 #include <fcntl.h>
 #include <stdio.h>
+#include <stdint.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
@@ -26,24 +27,24 @@
 unsigned char *input_file_buffer;
 
 struct pcx_header {
-	char ID;
-	char version;
-	char encoding;
-	char bits_per_pixel;
-	short int x_min;
-	short int y_min;
-	short int x_max;
-	short int y_max;
-	short x_resolution;
-	short y_resolution;
-	char palette[48];
-	char reserved;
-	char number_of_bit_planes;
-	short bytes_per_line;
-	short palette_type;
-	short x_screen_size;
-	short y_screen_size;
-	char filler[54];
+	uint8_t ID;
+	uint8_t version;
+	uint8_t encoding;
+	uint8_t bits_per_pixel;
+	uint16_t x_min;
+	uint16_t y_min;
+	uint16_t x_max;
+	uint16_t y_max;
+	uint16_t x_resolution;
+	uint16_t y_resolution;
+	uint8_t palette[48];
+	uint8_t reserved;
+	uint8_t number_of_bit_planes;
+	uint16_t bytes_per_line;
+	uint16_t palette_type;
+	uint16_t x_screen_size;
+	uint16_t y_screen_size;
+	uint8_t filler[54];
 } pcx_header;
 
 unsigned char pcx_image_palette[PCX_PALETTE_LENGTH];

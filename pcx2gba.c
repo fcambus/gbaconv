@@ -102,8 +102,11 @@ int main(int argc, char *argv[]) {
 		return EXIT_FAILURE;
 	}
 
+	pcx_header.x_max++;
+	pcx_header.y_max++;
+
 	/* Uncompress RLE encoded PCX Input File */
-	pcx_buffer_size = (pcx_header.x_max+1)*(pcx_header.y_max+1);
+	pcx_buffer_size = pcx_header.x_max * pcx_header.y_max;
 	pcx_buffer = malloc(pcx_buffer_size);
 
 	loop = PCX_HEADER_LENGTH;
@@ -131,7 +134,7 @@ int main(int argc, char *argv[]) {
 		pcx_image_palette[loop] = input_file_buffer[st.st_size - PCX_PALETTE_LENGTH + loop] / 8;
 	}
 
-	fprintf(stderr, "INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max+1, pcx_header.y_max+1, pcx_header.bits_per_pixel);
+	fprintf(stderr, "INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max, pcx_header.y_max, pcx_header.bits_per_pixel);
 
 	fprintf(stdout, "const u16 %s_palette[] = {\n", argv[2]);
 

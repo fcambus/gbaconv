@@ -118,13 +118,23 @@ int main(int argc, char *argv[]) {
 			run_count = current_byte-192;
 
 			for (run_position = 0; run_position < run_count; run_position++) {
-				if (offset + run_position < pcx_buffer_size)
+				if (offset + run_position < pcx_buffer_size) {
 					pcx_buffer[offset + run_position] = input_file_buffer[loop +1];
+				} else {
+					printf("ERROR: Input File is corrupt\n\n");
+					return EXIT_FAILURE;
+				}
 			}
 			offset += run_count;
 			loop += 2;
 		} else {
-			pcx_buffer[offset] = current_byte;
+			if (offset < pcx_buffer_size) {
+				pcx_buffer[offset] = current_byte;
+			} else {
+				printf("ERROR: Input File is corrupt\n\n");
+				return EXIT_FAILURE;
+			}
+
 			offset++;
 			loop++;
 		}

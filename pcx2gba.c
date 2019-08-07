@@ -105,6 +105,11 @@ int main(int argc, char *argv[]) {
 	pcx_header.x_max++;
 	pcx_header.y_max++;
 
+	if ((pcx_header.x_max) > 4096 || (pcx_header.y_max) > 4096) {
+		printf("ERROR: Input File height or width is larger than 4096\n\n");
+		return EXIT_FAILURE;
+	}
+
 	/* Uncompress RLE encoded PCX Input File */
 	pcx_buffer_size = pcx_header.x_max * pcx_header.y_max;
 	pcx_buffer = malloc(pcx_buffer_size);

@@ -133,12 +133,8 @@ int main(int argc, char *argv[]) {
 			offset += run_count;
 			loop += 2;
 		} else {
-			if (offset < pcx_buffer_size) {
+			if (offset < pcx_buffer_size)
 				pcx_buffer[offset] = current_byte;
-			} else {
-				printf("ERROR: Input File is corrupt\n\n");
-				return EXIT_FAILURE;
-			}
 
 			offset++;
 			loop++;

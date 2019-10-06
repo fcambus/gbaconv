@@ -49,9 +49,9 @@ struct pcx_header {
 
 unsigned char pcx_image_palette[PCX_PALETTE_LENGTH];
 unsigned char *pcx_buffer;
-int pcx_buffer_size;
+size_t pcx_buffer_size;
 
-int loop;
+size_t loop;
 
 int current_byte;
 int offset;

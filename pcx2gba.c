@@ -147,21 +147,27 @@ int main(int argc, char *argv[]) {
 
 	fprintf(stderr, "INPUT  FILE: %s (%ix%ix%i-bpp)\n", argv[1], pcx_header.x_max, pcx_header.y_max, pcx_header.bits_per_pixel);
 
-	fprintf(stdout, "const u16 %s_palette[] = {\n", argv[2]);
+	fprintf(stdout, "const u16 %s_palette[] = {", argv[2]);
 
 	for (loop = 0; loop < 256; loop++) {
+		if (loop % 10 == 0)
+			fprintf(stdout, "\n\t");
+
 		fprintf(stdout, "0x%x,", pcx_image_palette[loop*3] | pcx_image_palette[(loop*3)+1]<<5 | pcx_image_palette[(loop*3)+2]<<10);
 	}
 
-	fprintf(stdout, "};\n\n");
+	fprintf(stdout, "\n};\n\n");
 
-	fprintf(stdout, "const u16 %s[] = {\n", argv[2]);
+	fprintf(stdout, "const u16 %s[] = {", argv[2]);
 
 	for (loop = 0; loop < pcx_buffer_size/2; loop++) {
+		if (loop % 10 == 0)
+			fprintf(stdout, "\n\t");
+
 		fprintf(stdout, "0x%x,", pcx_buffer[loop*2] | pcx_buffer[(loop*2)+1]<<8);
 	}
 
-	fprintf(stdout, "};\n");
+	fprintf(stdout, "\n};\n");
 
 	/* Terminate Program */
 	munmap(input_file_buffer, st.st_size);

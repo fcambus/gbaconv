@@ -40,7 +40,8 @@ struct wave_header {
 	unsigned int data_chunk_size;
 } wave_header;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 	int fd;
 	struct stat st;
 

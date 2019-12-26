@@ -58,7 +58,8 @@ int offset;
 int run_count;
 int run_position;
 
-int main(int argc, char *argv[]) {
+int main(int argc, char *argv[])
+{
 	int fd;
 	struct stat st;
 

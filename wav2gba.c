@@ -38,7 +38,7 @@ struct wave_header {
 	unsigned short int bits_per_sample;
 	char data_chunk[4];
 	unsigned int data_chunk_size;
-} wave_header;
+} __attribute__((packed)) wave_header;
 
 int main(int argc, char *argv[])
 {

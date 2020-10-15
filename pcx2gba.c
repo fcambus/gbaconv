@@ -45,7 +45,7 @@ struct pcx_header {
 	uint16_t x_screen_size;
 	uint16_t y_screen_size;
 	uint8_t filler[54];
-} pcx_header;
+} __attribute__((packed)) pcx_header;
 
 unsigned char pcx_image_palette[PCX_PALETTE_LENGTH];
 unsigned char *pcx_buffer;

@@ -115,6 +115,11 @@ int main(int argc, char *argv[])
 	pcx_buffer_size = pcx_header.x_max * pcx_header.y_max;
 	pcx_buffer = malloc(pcx_buffer_size);
 
+	if (!pcx_buffer) {
+		printf("ERROR: Cannot allocate memory for the PCX buffer\n\n");
+		return EXIT_FAILURE;
+	}
+
 	loop = PCX_HEADER_LENGTH;
 
 	while (loop < st.st_size - PCX_PALETTE_LENGTH) {
